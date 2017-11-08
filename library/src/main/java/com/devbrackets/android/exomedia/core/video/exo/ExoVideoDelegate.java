@@ -22,6 +22,7 @@ import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Pair;
 import android.view.Surface;
 
 import com.devbrackets.android.exomedia.ExoMedia;
@@ -35,6 +36,7 @@ import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 
+import java.util.List;
 import java.util.Map;
 
 public class ExoVideoDelegate {
@@ -56,23 +58,31 @@ public class ExoVideoDelegate {
         setup();
     }
 
-    public void setVideoUri(@Nullable Uri uri) {
-        setVideoUri(uri, null);
+    public void setVideoUri(@Nullable Uri uri, @Nullable List<Pair<String, String>> extraHeaders) {
+        setVideoUri(uri, null, extraHeaders);
     }
 
-    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource) {
+    public void setVideoUri(@Nullable Uri videoUri, @Nullable Uri audioUri, @Nullable List<Pair<String, String>> extraHeaders) {
+        setVideoUri(videoUri, audioUri, null, extraHeaders);
+    }
+
+    public void setVideoUri(@Nullable Uri uri, @Nullable Uri audioUri, @Nullable MediaSource mediaSource, @Nullable List<Pair<String, String>> extraHeaders) {
         //Makes sure the listeners get the onPrepared callback
         listenerMux.setNotifiedPrepared(false);
         exoMediaPlayer.seekTo(0);
 
         if (mediaSource != null) {
-            exoMediaPlayer.setMediaSource(mediaSource);
+            exoMediaPlayer.setMediaSource(mediaSource, extraHeaders);
             listenerMux.setNotifiedCompleted(false);
         } else if (uri != null) {
-            exoMediaPlayer.setUri(uri);
+            if (audioUri != null) {
+                exoMediaPlayer.setUri(uri, audioUri, extraHeaders);
+            } else {
+                exoMediaPlayer.setUri(uri, extraHeaders);
+            }
             listenerMux.setNotifiedCompleted(false);
         } else {
-            exoMediaPlayer.setMediaSource(null);
+            exoMediaPlayer.setMediaSource(null,extraHeaders);
         }
     }
 
@@ -89,7 +99,7 @@ public class ExoVideoDelegate {
     }
 
     public boolean restart() {
-        if(!exoMediaPlayer.restart()) {
+        if (!exoMediaPlayer.restart()) {
             return false;
         }
 

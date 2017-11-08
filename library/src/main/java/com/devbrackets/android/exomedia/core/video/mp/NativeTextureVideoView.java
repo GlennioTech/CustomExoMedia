@@ -26,6 +26,7 @@ import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.widget.MediaController;
@@ -38,6 +39,7 @@ import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -138,13 +140,18 @@ public class NativeTextureVideoView extends ResizingTextureView implements Nativ
     }
 
     @Override
-    public void setVideoUri(@Nullable Uri uri) {
-        setVideoUri(uri, null);
+    public void setVideoUri(@Nullable Uri uri, @Nullable List<Pair<String, String>> extraHeaders) {
+        setVideoUri(uri, (MediaSource) null, extraHeaders);
     }
 
     @Override
-    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource) {
+    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource, @Nullable List<Pair<String, String>> extraHeaders) {
         setVideoURI(uri);
+    }
+
+    @Override
+    public void setVideoUri(@Nullable Uri videoUri, @Nullable Uri audioUri, @Nullable List<Pair<String, String>> extraHeaders) {
+        setVideoURI(videoUri);
     }
 
     @Override
@@ -230,12 +237,12 @@ public class NativeTextureVideoView extends ResizingTextureView implements Nativ
     /**
      * Sets video URI using specific headers.
      *
-     * @param uri The Uri for the video to play
+     * @param uri     The Uri for the video to play
      * @param headers The headers for the URI request.
-     * Note that the cross domain redirection is allowed by default, but that can be
-     * changed with key/value pairs through the headers parameter with
-     * "android-allow-cross-domain-redirect" as the key and "0" or "1" as the value
-     * to disallow or allow cross domain redirection.
+     *                Note that the cross domain redirection is allowed by default, but that can be
+     *                changed with key/value pairs through the headers parameter with
+     *                "android-allow-cross-domain-redirect" as the key and "0" or "1" as the value
+     *                to disallow or allow cross domain redirection.
      */
     public void setVideoURI(Uri uri, @Nullable Map<String, String> headers) {
         delegate.setVideoURI(uri, headers);

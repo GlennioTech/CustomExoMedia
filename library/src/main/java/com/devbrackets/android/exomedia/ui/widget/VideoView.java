@@ -22,6 +22,7 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
@@ -31,6 +32,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.TextureView;
@@ -60,6 +62,8 @@ import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -78,10 +82,14 @@ public class VideoView extends RelativeLayout {
     @Nullable
     protected VideoControls videoControls;
     protected ImageView previewImageView;
+    protected MediaPlayer.OnVideoSizeChangedListener onVideoSizeChangedListener;
+
 
     protected Uri videoUri;
+    protected List<Pair<String,String>> headers;
     protected VideoViewApi videoViewImpl;
     protected DeviceUtil deviceUtil = new DeviceUtil();
+
 
     protected AudioManager audioManager;
     @NonNull
@@ -264,10 +272,10 @@ public class VideoView extends RelativeLayout {
      *
      * @param uri The video's Uri
      */
-    public void setVideoURI(@Nullable Uri uri) {
+    public void setVideoURI(@Nullable Uri uri,@Nullable List<Pair<String,String>> extraHeaders) {
         videoUri = uri;
-        videoViewImpl.setVideoUri(uri);
-
+        videoViewImpl.setVideoUri(uri,extraHeaders);
+        this.headers = extraHeaders;
         if (videoControls != null) {
             videoControls.showLoading(true);
         }
@@ -279,9 +287,20 @@ public class VideoView extends RelativeLayout {
      * @param uri The video's Uri
      * @param mediaSource MediaSource that should be used
      */
-    public void setVideoURI(@Nullable Uri uri, @Nullable MediaSource mediaSource) {
+    public void setVideoURI(@Nullable Uri uri, @Nullable MediaSource mediaSource,@Nullable List<Pair<String,String>> extraHeaders) {
         videoUri = uri;
-        videoViewImpl.setVideoUri(uri, mediaSource);
+        videoViewImpl.setVideoUri(uri, mediaSource,extraHeaders);
+        this.headers = extraHeaders;
+
+        if (videoControls != null) {
+            videoControls.showLoading(true);
+        }
+    }
+
+    public void setVideoURI(@Nullable Uri videoUri, @Nullable Uri audioUri,@Nullable List<Pair<String,String>> extraHeaders) {
+        this.videoUri = videoUri;
+        this.headers = extraHeaders;
+        videoViewImpl.setVideoUri(videoUri, audioUri,extraHeaders);
 
         if (videoControls != null) {
             videoControls.showLoading(true);
@@ -295,15 +314,9 @@ public class VideoView extends RelativeLayout {
      * @param path The path to the video
      */
     public void setVideoPath(String path) {
-        setVideoURI(Uri.parse(path));
+        setVideoURI(Uri.parse(path),new ArrayList<Pair<String, String>>());
     }
 
-    /**
-     * Retrieves the current Video URI.  If this hasn't been set with {@link #setVideoURI(android.net.Uri)}
-     * or {@link #setVideoPath(String)} then null will be returned.
-     *
-     * @return The current video URI or null
-     */
     @Nullable
     public Uri getVideoUri() {
         return videoUri;
@@ -350,7 +363,7 @@ public class VideoView extends RelativeLayout {
      */
     public void reset() {
         stopPlayback();
-        setVideoURI(null);
+        setVideoURI(null,new ArrayList<Pair<String, String>>());
     }
 
     /**
@@ -375,11 +388,7 @@ public class VideoView extends RelativeLayout {
         return videoViewImpl.isPlaying();
     }
 
-    /**
-     * Starts the playback for the video specified in {@link #setVideoURI(android.net.Uri)}
-     * or {@link #setVideoPath(String)}.  This should be called after the VideoView is correctly
-     * prepared (see {@link #setOnPreparedListener(OnPreparedListener)})
-     */
+
     public void start() {
         if (!audioFocusHelper.requestFocus()) {
             return;
@@ -678,6 +687,10 @@ public class VideoView extends RelativeLayout {
         muxNotifier.videoSizeChangedListener = listener;
     }
 
+    public void setOnVideoSizeChangedListener(MediaPlayer.OnVideoSizeChangedListener onVideoSizeChangedListener) {
+        this.onVideoSizeChangedListener = onVideoSizeChangedListener;
+    }
+
     /**
      * Returns a {@link Bitmap} representation of the current contents of the
      * view. If the surface isn't ready or we cannot access it for some reason then
@@ -948,6 +961,8 @@ public class VideoView extends RelativeLayout {
             if (videoSizeChangedListener != null) {
                 videoSizeChangedListener.onVideoSizeChanged(width, height);
             }
+            if (onVideoSizeChangedListener != null)
+                onVideoSizeChangedListener.onVideoSizeChanged(null, width, height);
         }
 
         @Override

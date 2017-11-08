@@ -21,6 +21,7 @@ import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Pair;
 import android.view.View;
 
 import com.devbrackets.android.exomedia.ExoMedia;
@@ -30,6 +31,7 @@ import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,9 +50,11 @@ public interface VideoViewApi {
 
     int getWidth();
 
-    void setVideoUri(@Nullable Uri uri);
+    void setVideoUri(@Nullable Uri uri,@Nullable List<Pair<String,String>> extraHeaders);
 
-    void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource);
+    void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource,@Nullable List<Pair<String,String>> extraHeaders);
+
+    void setVideoUri(@Nullable Uri videoUri, @Nullable Uri audioUri,@Nullable List<Pair<String,String>> extraHeaders);
 
     /**
      * Sets the {@link MediaDrmCallback} to use when handling DRM for media.

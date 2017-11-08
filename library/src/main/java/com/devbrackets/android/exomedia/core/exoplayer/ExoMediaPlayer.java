@@ -30,6 +30,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Surface;
 
 import com.devbrackets.android.exomedia.ExoMedia;
@@ -219,13 +220,17 @@ public class ExoMediaPlayer implements Player.EventListener {
         this.drmCallback = drmCallback;
     }
 
-    public void setUri(@Nullable Uri uri) {
-        setMediaSource(uri != null ? mediaSourceProvider.generate(context, mainHandler, uri, bandwidthMeter) : null);
+    public void setUri(@Nullable Uri uri, @Nullable List<Pair<String, String>> extraHeaders) {
+        setMediaSource(uri != null ? mediaSourceProvider.generate(context, mainHandler, uri,null, bandwidthMeter) : null,extraHeaders);
     }
 
-    public void setMediaSource(@Nullable MediaSource source) {
-        this.mediaSource = source;
+    public void setUri(@Nullable Uri uri,@Nullable Uri audioUri, @Nullable List<Pair<String, String>> extraHeaders) {
+        setMediaSource(uri != null ? mediaSourceProvider.generate(context, mainHandler, uri,audioUri, bandwidthMeter) : null,extraHeaders);
+    }
 
+
+    public void setMediaSource(@Nullable MediaSource source, @Nullable List<Pair<String, String>> extraHeaders) {
+        this.mediaSource = source;
         prepared = false;
         prepare();
     }

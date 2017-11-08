@@ -25,6 +25,7 @@ import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.widget.MediaController;
@@ -37,6 +38,7 @@ import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -133,12 +135,17 @@ public class NativeSurfaceVideoView extends ResizingSurfaceView implements Nativ
     }
 
     @Override
-    public void setVideoUri(@Nullable Uri uri) {
-        setVideoUri(uri, null);
+    public void setVideoUri(@Nullable Uri uri, @Nullable List<Pair<String, String>> extraHeaders) {
+        setVideoUri(uri,(MediaSource) null,extraHeaders);
     }
 
     @Override
-    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource) {
+    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource, @Nullable List<Pair<String, String>> extraHeaders) {
+        setVideoURI(uri);
+    }
+
+    @Override
+    public void setVideoUri(@Nullable Uri uri,@Nullable Uri audioUri, @Nullable List<Pair<String, String>> extraHeaders) {
         setVideoURI(uri);
     }
 

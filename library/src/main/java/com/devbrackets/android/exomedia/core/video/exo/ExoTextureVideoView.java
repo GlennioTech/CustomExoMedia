@@ -25,6 +25,7 @@ import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.Surface;
 
 import com.devbrackets.android.exomedia.ExoMedia;
@@ -35,6 +36,7 @@ import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -66,13 +68,18 @@ public class ExoTextureVideoView extends ResizingTextureView implements VideoVie
     }
 
     @Override
-    public void setVideoUri(@Nullable Uri uri) {
-        delegate.setVideoUri(uri);
+    public void setVideoUri(@Nullable Uri uri, @Nullable List<Pair<String, String>> extraHeaders) {
+        delegate.setVideoUri(uri,extraHeaders);
     }
 
     @Override
-    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource) {
-        delegate.setVideoUri(uri, mediaSource);
+    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource, @Nullable List<Pair<String, String>> extraHeaders) {
+        delegate.setVideoUri(uri,null, mediaSource,extraHeaders);
+    }
+
+    @Override
+    public void setVideoUri(@Nullable Uri videoUri, @Nullable Uri audioUri, @Nullable List<Pair<String, String>> extraHeaders) {
+        delegate.setVideoUri(videoUri,audioUri, null,extraHeaders);
     }
 
     @Override

@@ -1,24 +1,18 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
-apply plugin: 'com.novoda.bintray-release'
 
 def versionMajor = 4
 def versionMinor = 0
 def versionPatch = 3
 
-def libraryGroupId = 'com.devbrackets.android'
-def libraryBaseName = 'exomedia'
-def libraryVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
-
 dependencies {
-    compile "com.android.support:support-media-compat:$rootProject.ext.supportLibVersion"
-    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
+    compile "com.android.support:support-media-compat:27.0.0"
+    compile "com.android.support:appcompat-v7:27.0.0"
 
     // ExoPlayer
-    compile "com.google.android.exoplayer:exoplayer-core:$rootProject.ext.exoPlayerVersion"
-    compile "com.google.android.exoplayer:exoplayer-dash:$rootProject.ext.exoPlayerVersion"
-    compile "com.google.android.exoplayer:exoplayer-hls:$rootProject.ext.exoPlayerVersion"
-    compile "com.google.android.exoplayer:exoplayer-smoothstreaming:$rootProject.ext.exoPlayerVersion"
+    compile "com.google.android.exoplayer:exoplayer-core:r2.5.4"
+    compile "com.google.android.exoplayer:exoplayer-dash:r2.5.4"
+    compile "com.google.android.exoplayer:exoplayer-hls:r2.5.4"
+    compile "com.google.android.exoplayer:exoplayer-smoothstreaming:r2.5.4"
 }
 
 android {
@@ -43,29 +37,4 @@ android {
     lintOptions {
         abortOnError false
     }
-}
-
-// ======== MAVEN DEPLOY to local cache or nexus repo (to make accessible to local projects) (command: ./gradlew clean aRel uploadArchives) ========
-uploadArchives {
-    repositories {
-        // deploy to local
-        mavenDeployer {
-            repository (url: "file://${System.env.HOME}/.m2/repository/")
-            pom.groupId = libraryGroupId
-            pom.artifactId = libraryBaseName
-            pom.version = libraryVersion //Normally I would append "-SNAPSHOT" but newer gradle/maven can't always find them
-            pom.packaging = 'aar'
-            uniqueVersion = false // don't put in a timestamp on the filename (other project will not be able to depend on it)
-        }
-    }
-}
-
-// ======= BINTRAY DEPLOY (command: $ ./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false) ====
-publish {
-    groupId = libraryGroupId
-    artifactId = libraryBaseName
-    uploadName = 'ExoMedia'
-    version = libraryVersion
-    autoPublish = false
-    dryRun = false
 }

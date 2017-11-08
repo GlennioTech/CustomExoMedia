@@ -29,18 +29,19 @@ public class MediaSourceProvider {
     protected String userAgent = String.format(USER_AGENT_FORMAT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, Build.VERSION.RELEASE, Build.MODEL);
 
     @NonNull
-    public MediaSource generate(@NonNull Context context, @NonNull Handler handler, @NonNull Uri uri, @Nullable TransferListener<? super DataSource> transferListener ) {
-        String extension = MediaSourceUtil.getExtension(uri);
+    public MediaSource generate(@NonNull Context context, @NonNull Handler handler, @NonNull Uri videoUri,@Nullable Uri audioUri, @Nullable TransferListener<? super DataSource> transferListener ) {
+        String extension = MediaSourceUtil.getExtension(videoUri);
 
         // Searches for a registered builder
         SourceTypeBuilder sourceTypeBuilder = findByExtension(extension);
         if (sourceTypeBuilder == null) {
-            sourceTypeBuilder = findByLooseComparison(uri);
+            sourceTypeBuilder = findByLooseComparison(videoUri);
         }
+
 
         // If a registered builder wasn't found then use the default
         MediaSourceBuilder builder = sourceTypeBuilder != null ? sourceTypeBuilder.builder : new DefaultMediaSourceBuilder();
-        return builder.build(context, uri, userAgent, handler, transferListener);
+        return builder.build(context, videoUri,audioUri, userAgent, handler, transferListener);
     }
 
     @Nullable
