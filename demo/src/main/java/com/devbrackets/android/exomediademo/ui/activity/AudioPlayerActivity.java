@@ -271,17 +271,17 @@ public class AudioPlayerActivity extends AppCompatActivity implements PlaylistLi
      * xml layout file.
      */
     private void retrieveViews() {
-        loadingBar = findViewById(R.id.audio_player_loading);
-        artworkView = findViewById(R.id.audio_player_image);
+        loadingBar = (ProgressBar)findViewById(R.id.audio_player_loading);
+        artworkView = (ImageView)findViewById(R.id.audio_player_image);
 
-        currentPositionView = findViewById(R.id.audio_player_position);
-        durationView = findViewById(R.id.audio_player_duration);
+        currentPositionView = (TextView)findViewById(R.id.audio_player_position);
+        durationView = (TextView)findViewById(R.id.audio_player_duration);
 
-        seekBar = findViewById(R.id.audio_player_seek);
+        seekBar = (SeekBar)findViewById(R.id.audio_player_seek);
 
-        previousButton = findViewById(R.id.audio_player_previous);
-        playPauseButton = findViewById(R.id.audio_player_play_pause);
-        nextButton = findViewById(R.id.audio_player_next);
+        previousButton = (ImageButton)findViewById(R.id.audio_player_previous);
+        playPauseButton = (ImageButton)findViewById(R.id.audio_player_play_pause);
+        nextButton = (ImageButton)findViewById(R.id.audio_player_next);
     }
 
     /**

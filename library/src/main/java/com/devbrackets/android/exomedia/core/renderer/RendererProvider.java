@@ -14,9 +14,7 @@ import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector;
 import com.google.android.exoplayer2.metadata.MetadataDecoderFactory;
-import com.google.android.exoplayer2.metadata.MetadataOutput;
 import com.google.android.exoplayer2.metadata.MetadataRenderer;
-import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.text.TextRenderer;
 import com.google.android.exoplayer2.video.MediaCodecVideoRenderer;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
@@ -28,7 +26,6 @@ import java.util.List;
 /**
  * Provides all the necessary {@link com.google.android.exoplayer2.Renderer}s
  */
-@SuppressWarnings("WeakerAccess")
 public class RendererProvider {
     @NonNull
     protected Context context;
@@ -36,9 +33,9 @@ public class RendererProvider {
     protected Handler handler;
 
     @NonNull
-    protected TextOutput captionListener;
+    protected TextRenderer.Output captionListener;
     @NonNull
-    protected MetadataOutput metadataListener;
+    protected MetadataRenderer.Output metadataListener;
     @NonNull
     protected AudioRendererEventListener audioRendererEventListener;
     @NonNull
@@ -49,8 +46,8 @@ public class RendererProvider {
     protected int droppedFrameNotificationAmount = 50;
     protected int videoJoiningTimeMs = 5_000;
 
-    public RendererProvider(@NonNull Context context, @NonNull Handler handler, @NonNull TextOutput captionListener, @NonNull MetadataOutput metadataListener,
-                            @NonNull AudioRendererEventListener audioRendererEventListener, @NonNull VideoRendererEventListener videoRendererEventListener) {
+    public RendererProvider(@NonNull Context context, @NonNull Handler handler, @NonNull TextRenderer.Output captionListener, @NonNull MetadataRenderer.Output metadataListener,
+                               @NonNull AudioRendererEventListener audioRendererEventListener, @NonNull VideoRendererEventListener videoRendererEventListener) {
         this.context = context;
         this.handler = handler;
         this.captionListener = captionListener;

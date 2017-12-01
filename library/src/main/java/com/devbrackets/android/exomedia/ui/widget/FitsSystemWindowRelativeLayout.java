@@ -112,6 +112,11 @@ public class FitsSystemWindowRelativeLayout extends RelativeLayout {
      * @return True if the system navigation buttons can move sides
      */
     private boolean navBarCanMove() {
-        return this.getResources().getConfiguration().smallestScreenWidthDp <= 600;
+        //noinspection SimplifiableIfStatement
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            return this.getResources().getConfiguration().smallestScreenWidthDp <= 600;
+        }
+
+        return false;
     }
 }
