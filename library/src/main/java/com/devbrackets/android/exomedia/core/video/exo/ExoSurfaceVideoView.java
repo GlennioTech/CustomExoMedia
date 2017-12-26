@@ -23,8 +23,8 @@ import android.os.Build;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.util.AttributeSet;
-import android.util.Pair;
 import android.view.SurfaceHolder;
 
 import com.devbrackets.android.exomedia.ExoMedia;

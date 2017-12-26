@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 
 import com.devbrackets.android.exomedia.BuildConfig;
 import com.devbrackets.android.exomedia.ExoMedia;
@@ -16,6 +17,8 @@ import com.devbrackets.android.exomedia.util.MediaSourceUtil;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.TransferListener;
+
+import java.util.List;
 
 /**
  * Provides the functionality to determine which {@link MediaSource} should be used
@@ -29,7 +32,7 @@ public class MediaSourceProvider {
     protected String userAgent = String.format(USER_AGENT_FORMAT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, Build.VERSION.RELEASE, Build.MODEL);
 
     @NonNull
-    public MediaSource generate(@NonNull Context context, @NonNull Handler handler, @NonNull Uri videoUri,@Nullable Uri audioUri, @Nullable TransferListener<? super DataSource> transferListener ) {
+    public MediaSource generate(@NonNull Context context, @NonNull Handler handler, @NonNull Uri videoUri, @Nullable Uri audioUri, @Nullable List<Pair<String,String>> headers, @Nullable TransferListener<? super DataSource> transferListener ) {
         String extension = MediaSourceUtil.getExtension(videoUri);
 
         // Searches for a registered builder
@@ -41,7 +44,7 @@ public class MediaSourceProvider {
 
         // If a registered builder wasn't found then use the default
         MediaSourceBuilder builder = sourceTypeBuilder != null ? sourceTypeBuilder.builder : new DefaultMediaSourceBuilder();
-        return builder.build(context, videoUri,audioUri, userAgent, handler, transferListener);
+        return builder.build(context, videoUri,audioUri,headers, userAgent, handler, transferListener);
     }
 
     @Nullable
