@@ -9,10 +9,10 @@ dependencies {
     implementation "com.android.support:appcompat-v7:27.0.0"
 
     // ExoPlayer
-    api "com.google.android.exoplayer:exoplayer-core:r2.5.4"
-    api "com.google.android.exoplayer:exoplayer-dash:r2.5.4"
-    api "com.google.android.exoplayer:exoplayer-hls:r2.5.4"
-    api "com.google.android.exoplayer:exoplayer-smoothstreaming:r2.5.4"
+    api "com.google.android.exoplayer:exoplayer-core:2.7.2"
+    api "com.google.android.exoplayer:exoplayer-dash:2.7.2"
+    api "com.google.android.exoplayer:exoplayer-hls:2.7.2"
+    api "com.google.android.exoplayer:exoplayer-smoothstreaming:2.7.2"
 }
 
 android {

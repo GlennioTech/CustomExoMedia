@@ -170,8 +170,10 @@ public class ExoMediaPlayer implements Player.EventListener {
         player.addListener(this);
     }
 
+
+
     @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {
+    public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
         // Purposefully left blank
     }
 
@@ -191,13 +193,19 @@ public class ExoMediaPlayer implements Player.EventListener {
     }
 
     @Override
-    public void onPositionDiscontinuity() {
-        // Purposefully left blank
+    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+
     }
 
     @Override
     public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
         // Purposefully left blank
+    }
+
+    @Override
+    public void onSeekProcessed() {
+        // Purposefully left blank
+
     }
 
     @Override
@@ -210,6 +218,11 @@ public class ExoMediaPlayer implements Player.EventListener {
         for (ExoPlayerListener listener : listeners) {
             listener.onError(this, exception);
         }
+    }
+
+    @Override
+    public void onPositionDiscontinuity(int reason) {
+
     }
 
     /**
@@ -812,11 +825,12 @@ public class ExoMediaPlayer implements Player.EventListener {
         }
 
         @Override
-        public void onAudioTrackUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
+        public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
             if (internalErrorListener != null) {
                 internalErrorListener.onAudioTrackUnderrun(bufferSize, bufferSizeMs, elapsedSinceLastFeedMs);
             }
         }
+
 
         @Override
         public void onVideoEnabled(DecoderCounters counters) {
