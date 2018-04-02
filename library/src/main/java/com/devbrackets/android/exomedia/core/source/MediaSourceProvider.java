@@ -41,7 +41,6 @@ public class MediaSourceProvider {
             sourceTypeBuilder = findByLooseComparison(videoUri);
         }
 
-
         // If a registered builder wasn't found then use the default
         MediaSourceBuilder builder = sourceTypeBuilder != null ? sourceTypeBuilder.builder : new DefaultMediaSourceBuilder();
         return builder.build(context, videoUri,audioUri,headers, userAgent, handler, transferListener);
