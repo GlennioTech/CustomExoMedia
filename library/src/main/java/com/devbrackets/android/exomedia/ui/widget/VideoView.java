@@ -58,6 +58,7 @@ import com.devbrackets.android.exomedia.listener.OnSeekCompletionListener;
 import com.devbrackets.android.exomedia.listener.OnVideoSizeChangedListener;
 import com.devbrackets.android.exomedia.util.DeviceUtil;
 import com.devbrackets.android.exomedia.util.StopWatch;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -335,6 +336,15 @@ public class VideoView extends RelativeLayout {
     }
 
     /**
+     * Retrieves the current media volume
+     *
+     * @return The volume for the media
+     */
+    public float getVolume() {
+        return videoViewImpl.getVolume();
+    }
+
+    /**
      * Sets the volume level for devices that support
      * the ExoPlayer (JellyBean or greater).
      *
@@ -556,6 +566,16 @@ public class VideoView extends RelativeLayout {
     }
 
     /**
+     * Sets the repeat mode for this MediaPlayer.
+     * <b>Note:</b> This will only change the ExoPlayer implementation
+     *
+     * @param repeatMode The repeat mode to use
+     */
+    public void setRepeatMode(@Player.RepeatMode int repeatMode) {
+        videoViewImpl.setRepeatMode(repeatMode);
+    }
+
+    /**
      * Sets the playback speed for this MediaPlayer.
      *
      * @param speed The speed to play the media back at
@@ -695,7 +715,7 @@ public class VideoView extends RelativeLayout {
      * Returns a {@link Bitmap} representation of the current contents of the
      * view. If the surface isn't ready or we cannot access it for some reason then
      * <code>null</code> will be returned instead.
-     *
+     * <p>
      * <b>NOTE:</b> Only the <code>TextureView</code> implementations support getting the bitmap
      * meaning that if the backing implementation is a <code>SurfaceView</code> then the result
      * will always be <code>null</code>
@@ -926,7 +946,9 @@ public class VideoView extends RelativeLayout {
 
         @Override
         public boolean shouldNotifyCompletion(long endLeeway) {
-            return getCurrentPosition() + endLeeway >= getDuration();
+            long position = getCurrentPosition();
+            long duration = getDuration();
+            return position > 0 && duration > 0 && position + endLeeway >= duration;
         }
 
         @Override

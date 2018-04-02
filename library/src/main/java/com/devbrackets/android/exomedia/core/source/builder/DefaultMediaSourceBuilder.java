@@ -24,6 +24,8 @@ public class DefaultMediaSourceBuilder extends MediaSourceBuilder {
         if (audioUri != null) {
             return new MergingMediaSource(new ExtractorMediaSource(uri, dataSourceFactory, new DefaultExtractorsFactory(), handler, null), new ExtractorMediaSource(audioUri, dataSourceFactory, new DefaultExtractorsFactory(), handler, null));
         }
-        return new ExtractorMediaSource(uri, dataSourceFactory, new DefaultExtractorsFactory(), handler, null);
+        return new ExtractorMediaSource.Factory(dataSourceFactory)
+                .setExtractorsFactory(new DefaultExtractorsFactory())
+                .createMediaSource(uri, handler, null);
     }
 }

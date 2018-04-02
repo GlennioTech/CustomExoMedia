@@ -22,6 +22,7 @@ public class SsMediaSourceBuilder extends MediaSourceBuilder {
         DataSource.Factory dataSourceFactory = buildDataSourceFactory(context,headers, userAgent, null);
         DataSource.Factory meteredDataSourceFactory = buildDataSourceFactory(context,headers, userAgent, transferListener);
 
-        return new SsMediaSource(uri, dataSourceFactory, new DefaultSsChunkSource.Factory(meteredDataSourceFactory), handler, null);
+        return new SsMediaSource.Factory(new DefaultSsChunkSource.Factory(meteredDataSourceFactory), dataSourceFactory)
+                .createMediaSource(uri, handler, null);
     }
 }

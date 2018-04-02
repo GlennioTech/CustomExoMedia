@@ -110,6 +110,11 @@ public class ExoVideoDelegate {
         return true;
     }
 
+    @FloatRange(from = 0.0, to = 1.0)
+    public float getVolume() {
+        return exoMediaPlayer.getVolume();
+    }
+
     public boolean setVolume(@FloatRange(from = 0.0, to = 1.0) float volume) {
         exoMediaPlayer.setVolume(volume);
         return true;
@@ -203,6 +208,10 @@ public class ExoVideoDelegate {
         exoMediaPlayer.addListener(listenerMux);
     }
 
+    public void setRepeatMode(int repeatMode) {
+        exoMediaPlayer.setRepeatMode(repeatMode);
+    }
+
     public void onSurfaceReady(Surface surface) {
         exoMediaPlayer.setSurface(surface);
         if (playRequested) {
@@ -211,7 +220,7 @@ public class ExoVideoDelegate {
     }
 
     public void onSurfaceDestroyed() {
-        exoMediaPlayer.blockingClearSurface();
+        exoMediaPlayer.clearSurface();
     }
 
     protected void setup() {
