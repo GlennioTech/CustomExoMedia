@@ -21,7 +21,19 @@ import java.util.List;
 public abstract class MediaSourceBuilder {
 
     @NonNull
-    public abstract MediaSource build(@NonNull Context context, @NonNull Uri uri, @Nullable Uri audioUrl, @Nullable List<Pair<String, String>> headers, @NonNull String userAgent, @NonNull Handler handler, @Nullable TransferListener<? super DataSource> transferListener);
+    public MediaSource build(@NonNull Context context, @NonNull Uri uri, @Nullable Uri audioUrl, @Nullable List<Pair<String, String>> headers, @NonNull String userAgent, @NonNull Handler handler, @Nullable TransferListener<? super DataSource> transferListener) {
+        if (headers != null) {
+            for (Pair<String, String> header : headers) {
+                if (header.first != null && header.first.toLowerCase().equals("user-agent")) {
+                    userAgent = header.second;
+                }
+            }
+        }
+        return buildInternal(context, uri, audioUrl, headers, userAgent, handler, transferListener);
+    }
+
+    @NonNull
+    protected abstract MediaSource buildInternal(@NonNull Context context, @NonNull Uri uri, @Nullable Uri audioUrl, @Nullable List<Pair<String, String>> headers, @NonNull String userAgent, @NonNull Handler handler, @Nullable TransferListener<? super DataSource> transferListener);
 
 
     @NonNull

@@ -17,7 +17,7 @@ import java.util.List;
 public class HlsMediaSourceBuilder extends MediaSourceBuilder {
     @NonNull
     @Override
-    public MediaSource build(@NonNull Context context, @NonNull Uri uri, @Nullable Uri audioUri, @Nullable List<Pair<String,String>> headers, @NonNull String userAgent, @NonNull Handler handler, @Nullable TransferListener<? super DataSource> transferListener) {
+    protected MediaSource buildInternal(@NonNull Context context, @NonNull Uri uri, @Nullable Uri audioUri, @Nullable List<Pair<String,String>> headers, @NonNull String userAgent, @NonNull Handler handler, @Nullable TransferListener<? super DataSource> transferListener) {
         DataSource.Factory dataSourceFactory = buildDataSourceFactory(context,headers, userAgent, transferListener);
         return new HlsMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(uri, handler, null);

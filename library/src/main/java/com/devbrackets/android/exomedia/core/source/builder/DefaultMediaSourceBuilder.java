@@ -19,7 +19,7 @@ import java.util.List;
 public class DefaultMediaSourceBuilder extends MediaSourceBuilder {
     @NonNull
     @Override
-    public MediaSource build(@NonNull Context context, @NonNull Uri uri, @Nullable Uri audioUri, @Nullable List<Pair<String, String>> headers, @NonNull String userAgent, @NonNull Handler handler, @Nullable TransferListener<? super DataSource> transferListener) {
+    protected MediaSource buildInternal(@NonNull Context context, @NonNull Uri uri, @Nullable Uri audioUri, @Nullable List<Pair<String, String>> headers, @NonNull String userAgent, @NonNull Handler handler, @Nullable TransferListener<? super DataSource> transferListener) {
         DataSource.Factory dataSourceFactory = buildDataSourceFactory(context, headers, userAgent, transferListener);
         if (audioUri != null) {
             return new MergingMediaSource(new ExtractorMediaSource(uri, dataSourceFactory, new DefaultExtractorsFactory(), handler, null), new ExtractorMediaSource(audioUri, dataSourceFactory, new DefaultExtractorsFactory(), handler, null));
