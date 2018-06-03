@@ -1,15 +1,12 @@
 package com.devbrackets.android.exomedia.core.source;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
-import com.devbrackets.android.exomedia.BuildConfig;
 import com.devbrackets.android.exomedia.ExoMedia;
 import com.devbrackets.android.exomedia.core.source.builder.DefaultMediaSourceBuilder;
 import com.devbrackets.android.exomedia.core.source.builder.MediaSourceBuilder;
@@ -25,12 +22,8 @@ import java.util.List;
  * to play a particular URL.
  */
 public class MediaSourceProvider {
-    protected static final String USER_AGENT_FORMAT = "ExoMedia %s (%d) / Android %s / %s";
 
-    @NonNull
-    @SuppressLint("DefaultLocale")
-    protected String userAgent = String.format(USER_AGENT_FORMAT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, Build.VERSION.RELEASE, Build.MODEL);
-
+    protected String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
     @NonNull
     public MediaSource generate(@NonNull Context context, @NonNull Handler handler, @NonNull Uri videoUri, @Nullable Uri audioUri, @Nullable List<Pair<String,String>> headers, @Nullable TransferListener<? super DataSource> transferListener ) {
         String extension = MediaSourceUtil.getExtension(videoUri);
