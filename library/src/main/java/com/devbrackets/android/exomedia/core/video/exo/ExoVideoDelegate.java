@@ -82,7 +82,7 @@ public class ExoVideoDelegate {
             }
             listenerMux.setNotifiedCompleted(false);
         } else {
-            exoMediaPlayer.setMediaSource(null,extraHeaders);
+            exoMediaPlayer.setMediaSource(null, extraHeaders);
         }
     }
 

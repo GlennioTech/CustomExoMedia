@@ -18,9 +18,9 @@ import java.util.List;
 public class SsMediaSourceBuilder extends MediaSourceBuilder {
     @NonNull
     @Override
-    protected MediaSource buildInternal(@NonNull Context context, @NonNull Uri uri, @Nullable Uri audioUri, @Nullable List<Pair<String,String>> headers, @NonNull String userAgent, @NonNull Handler handler, @Nullable TransferListener<? super DataSource> transferListener) {
-        DataSource.Factory dataSourceFactory = buildDataSourceFactory(context,headers, userAgent, null);
-        DataSource.Factory meteredDataSourceFactory = buildDataSourceFactory(context,headers, userAgent, transferListener);
+    protected MediaSource buildInternal(@NonNull Context context, @NonNull Uri uri, @Nullable Uri audioUri, @Nullable List<Pair<String, String>> headers, @NonNull String userAgent, @NonNull Handler handler, @Nullable TransferListener<? super DataSource> transferListener) {
+        DataSource.Factory dataSourceFactory = buildDataSourceFactory(context, headers, userAgent, null);
+        DataSource.Factory meteredDataSourceFactory = buildDataSourceFactory(context, headers, userAgent, transferListener);
 
         return new SsMediaSource.Factory(new DefaultSsChunkSource.Factory(meteredDataSourceFactory), dataSourceFactory)
                 .createMediaSource(uri, handler, null);

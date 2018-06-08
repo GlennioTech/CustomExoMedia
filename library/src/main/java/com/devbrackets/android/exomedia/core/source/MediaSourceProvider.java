@@ -24,20 +24,6 @@ import java.util.List;
 public class MediaSourceProvider {
 
     protected String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
-    @NonNull
-    public MediaSource generate(@NonNull Context context, @NonNull Handler handler, @NonNull Uri videoUri, @Nullable Uri audioUri, @Nullable List<Pair<String,String>> headers, @Nullable TransferListener<? super DataSource> transferListener ) {
-        String extension = MediaSourceUtil.getExtension(videoUri);
-
-        // Searches for a registered builder
-        SourceTypeBuilder sourceTypeBuilder = findByExtension(extension);
-        if (sourceTypeBuilder == null) {
-            sourceTypeBuilder = findByLooseComparison(videoUri);
-        }
-
-        // If a registered builder wasn't found then use the default
-        MediaSourceBuilder builder = sourceTypeBuilder != null ? sourceTypeBuilder.builder : new DefaultMediaSourceBuilder();
-        return builder.build(context, videoUri,audioUri,headers, userAgent, handler, transferListener);
-    }
 
     @Nullable
     protected static SourceTypeBuilder findByExtension(@Nullable String extension) {
@@ -63,6 +49,21 @@ public class MediaSourceProvider {
         }
 
         return null;
+    }
+
+    @NonNull
+    public MediaSource generate(@NonNull Context context, @NonNull Handler handler, @NonNull Uri videoUri, @Nullable Uri audioUri, @Nullable List<Pair<String, String>> headers, @Nullable TransferListener<? super DataSource> transferListener) {
+        String extension = MediaSourceUtil.getExtension(videoUri);
+
+        // Searches for a registered builder
+        SourceTypeBuilder sourceTypeBuilder = findByExtension(extension);
+        if (sourceTypeBuilder == null) {
+            sourceTypeBuilder = findByLooseComparison(videoUri);
+        }
+
+        // If a registered builder wasn't found then use the default
+        MediaSourceBuilder builder = sourceTypeBuilder != null ? sourceTypeBuilder.builder : new DefaultMediaSourceBuilder();
+        return builder.build(context, videoUri, audioUri, headers, userAgent, handler, transferListener);
     }
 
     public static class SourceTypeBuilder {

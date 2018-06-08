@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2012-2013 The named-regexp Authors
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -93,7 +93,7 @@ public class Matcher implements MatchResult {
         return null;
     }
 
-    public String optGroup(String name,String defaultValue) {
+    public String optGroup(String name, String defaultValue) {
         try {
             return group(name);
         } catch (Exception ignored) {
@@ -230,7 +230,6 @@ public class Matcher implements MatchResult {
     }
 
 
-
     /**
      * Returns the input subsequence captured by the given group during the
      * previous match operation.
@@ -279,7 +278,7 @@ public class Matcher implements MatchResult {
     public String group(String groupName) {
         int idx = groupIndex(groupName);
         if (idx < 0) {
-          throw new IndexOutOfBoundsException("No group \"" + groupName + "\"");
+            throw new IndexOutOfBoundsException("No group \"" + groupName + "\"");
         }
         return group(idx);
     }
@@ -512,7 +511,7 @@ public class Matcher implements MatchResult {
         if (!(obj instanceof Matcher)) {
             return false;
         }
-        Matcher other = (Matcher)obj;
+        Matcher other = (Matcher) obj;
         if (!parentPattern.equals(other.parentPattern)) {
             return false;
         }

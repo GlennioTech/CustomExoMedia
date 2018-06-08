@@ -47,7 +47,7 @@ public class RendererProvider {
     protected int videoJoiningTimeMs = 5_000;
 
     public RendererProvider(@NonNull Context context, @NonNull Handler handler, @NonNull TextRenderer.Output captionListener, @NonNull MetadataRenderer.Output metadataListener,
-                               @NonNull AudioRendererEventListener audioRendererEventListener, @NonNull VideoRendererEventListener videoRendererEventListener) {
+                            @NonNull AudioRendererEventListener audioRendererEventListener, @NonNull VideoRendererEventListener videoRendererEventListener) {
         this.context = context;
         this.handler = handler;
         this.captionListener = captionListener;
@@ -89,7 +89,7 @@ public class RendererProvider {
         // Adds any registered classes
         List<String> classNames = ExoMedia.Data.registeredRendererClasses.get(ExoMedia.RendererType.AUDIO);
         if (classNames != null) {
-            for (String className: classNames) {
+            for (String className : classNames) {
                 try {
                     Class<?> clazz = Class.forName(className);
                     Constructor<?> constructor = clazz.getConstructor(Handler.class, AudioRendererEventListener.class);
@@ -113,7 +113,7 @@ public class RendererProvider {
         // Adds any registered classes
         List<String> classNames = ExoMedia.Data.registeredRendererClasses.get(ExoMedia.RendererType.VIDEO);
         if (classNames != null) {
-            for (String className: classNames) {
+            for (String className : classNames) {
                 try {
                     Class<?> clazz = Class.forName(className);
                     Constructor<?> constructor = clazz.getConstructor(boolean.class, long.class, Handler.class, VideoRendererEventListener.class, int.class);

@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2012-2013 The named-regexp Authors
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,6 +35,22 @@ import java.util.regex.PatternSyntaxException;
  */
 public class Pattern implements Serializable {
 
+    /** @see {@link java.util.regex.Pattern#UNIX_LINES} */
+    public static final int UNIX_LINES = java.util.regex.Pattern.UNIX_LINES;
+    /** @see {@link java.util.regex.Pattern#CASE_INSENSITIVE */
+    public static final int CASE_INSENSITIVE = java.util.regex.Pattern.CASE_INSENSITIVE;
+    /** @see {@link java.util.regex.Pattern#COMMENTS} */
+    public static final int COMMENTS = java.util.regex.Pattern.COMMENTS;
+    /** @see {@link java.util.regex.Pattern#MULTILINE} */
+    public static final int MULTILINE = java.util.regex.Pattern.MULTILINE;
+    /** @see {@link java.util.regex.Pattern#LITERAL} */
+    public static final int LITERAL = java.util.regex.Pattern.LITERAL;
+    /** @see {@link java.util.regex.Pattern#DOTALL} */
+    public static final int DOTALL = java.util.regex.Pattern.DOTALL;
+    /** @see {@link java.util.regex.Pattern#UNICODE_CASE} */
+    public static final int UNICODE_CASE = java.util.regex.Pattern.UNICODE_CASE;
+    /** @see @link {@link java.util.regex.Pattern#CANON_EQ} */
+    public static final int CANON_EQ = java.util.regex.Pattern.CANON_EQ;
     /**
      * Determines if a de-serialized file is compatible with this class.
      *
@@ -47,50 +63,20 @@ public class Pattern implements Serializable {
      * included here as a reminder of its importance.
      */
     private static final long serialVersionUID = 1L;
-
     /** Pattern to match group names */
     private static final String NAME_PATTERN = "[^!=].*?";
-
     /** Pattern to match named capture groups in a pattern string */
     private static final java.util.regex.Pattern NAMED_GROUP_PATTERN = java.util.regex.Pattern.compile("\\(\\?<(" + NAME_PATTERN + ")>", java.util.regex.Pattern.DOTALL);
-
     /** Pattern to match back references for named capture groups */
     private static final java.util.regex.Pattern BACKREF_NAMED_GROUP_PATTERN = java.util.regex.Pattern.compile("\\\\k<(" + NAME_PATTERN + ")>", java.util.regex.Pattern.DOTALL);
-
     /** Pattern to match properties for named capture groups in a replacement string */
     private static final java.util.regex.Pattern PROPERTY_PATTERN = java.util.regex.Pattern.compile("\\$\\{(" + NAME_PATTERN + ")\\}", java.util.regex.Pattern.DOTALL);
-
     /** index of group within patterns above where group name is captured */
     private static final int INDEX_GROUP_NAME = 1;
-
-    /** @see {@link java.util.regex.Pattern#UNIX_LINES} */
-    public static final int UNIX_LINES = java.util.regex.Pattern.UNIX_LINES;
-
-    /** @see {@link java.util.regex.Pattern#CASE_INSENSITIVE */
-    public static final int CASE_INSENSITIVE = java.util.regex.Pattern.CASE_INSENSITIVE;
-
-    /** @see {@link java.util.regex.Pattern#COMMENTS} */
-    public static final int COMMENTS = java.util.regex.Pattern.COMMENTS;
-
-    /** @see {@link java.util.regex.Pattern#MULTILINE} */
-    public static final int MULTILINE = java.util.regex.Pattern.MULTILINE;
-
-    /** @see {@link java.util.regex.Pattern#LITERAL} */
-    public static final int LITERAL = java.util.regex.Pattern.LITERAL;
-
-    /** @see {@link java.util.regex.Pattern#DOTALL} */
-    public static final int DOTALL = java.util.regex.Pattern.DOTALL;
-
-    /** @see {@link java.util.regex.Pattern#UNICODE_CASE} */
-    public static final int UNICODE_CASE = java.util.regex.Pattern.UNICODE_CASE;
-
-    /** @see @link {@link java.util.regex.Pattern#CANON_EQ} */
-    public static final int CANON_EQ = java.util.regex.Pattern.CANON_EQ;
-
     private java.util.regex.Pattern pattern;
     private String namedPattern;
     private List<String> groupNames;
-    private Map<String,List<GroupInfo> > groupInfo;
+    private Map<String, List<GroupInfo>> groupInfo;
 
     /**
      * Constructs a named pattern with the given regular expression and flags
@@ -147,179 +133,6 @@ public class Pattern implements Serializable {
      */
     public static Pattern compile(String regex, int flags) {
         return new Pattern(regex, flags);
-    }
-
-    /**
-     * Gets the group index of a named capture group
-     *
-     * @param groupName name of capture group
-     * @return group index or -1 if not found
-     */
-    public int indexOf(String groupName) {
-        return indexOf(groupName, 0);
-    }
-
-    /**
-     * Gets the group index of a named capture group at the
-     * specified index. If only one instance of the named
-     * group exists, use index 0.
-     *
-     * @param groupName name of capture group
-     * @param index the instance index of the named capture group within
-     * the pattern; e.g., index is 2 for the third instance
-     * @return group index or -1 if not found
-     * @throws IndexOutOfBoundsException if instance index is out of bounds
-     */
-    public int indexOf(String groupName, int index) {
-        int idx = -1;
-        if (groupInfo.containsKey(groupName)) {
-            List<GroupInfo> list = groupInfo.get(groupName);
-            idx = list.get(index).groupIndex();
-        }
-        return idx;
-    }
-
-    /**
-     * Returns this pattern's match flags
-     *
-     * @return The match flags specified when this pattern was compiled
-     */
-    public int flags() {
-        return pattern.flags();
-    }
-
-    /**
-     * Creates a matcher that will match the given input against this pattern.
-     *
-     * @param input The character sequence to be matched
-     * @return A new matcher for this pattern
-     */
-    public Matcher matcher(CharSequence input) {
-        return new Matcher(this, input);
-    }
-
-    /**
-     * Returns the wrapped {@link java.util.regex.Pattern}
-     * @return the pattern
-     */
-    public java.util.regex.Pattern pattern() {
-        return pattern;
-    }
-
-    /**
-     * Returns the regular expression from which this pattern was compiled.
-     *
-     * @return The source of this pattern
-     */
-    public String standardPattern() {
-        return pattern.pattern();
-    }
-
-    /**
-     * Returns the original regular expression (including named groups)
-     *
-     * @return The regular expression
-     */
-    public String namedPattern() {
-        return namedPattern;
-    }
-
-    /**
-     * Gets the names of all capture groups
-     *
-     * @return the list of names
-     */
-    public List<String> groupNames() {
-        if (groupNames == null) {
-            groupNames = new ArrayList<String>(groupInfo.keySet());
-        }
-        return Collections.unmodifiableList(groupNames);
-    }
-
-    /**
-     * Gets the names and group info (group index and string position
-     * within the named pattern) of all named capture groups
-     *
-     * @return a map of group names and their info
-     */
-    public Map<String, List<GroupInfo> > groupInfo() {
-        return Collections.unmodifiableMap(groupInfo);
-    }
-
-    /**
-     * Replaces group-name properties (e.g., <b><code>${named}</code></b>) in
-     * a replacement pattern with the equivalent reference that uses the
-     * corresponding group index (e.g., <b><code>$2</code></b>). If the string
-     * contains literal "$", it must be escaped with slash or else this call
-     * will attempt to parse it as a group-name property.
-     *
-     * This is meant to be used to transform the parameter for:
-     *  <ul>
-     *  <li>{@link Matcher#replaceAll(String)}</li>
-     *  <li>{@link Matcher#replaceFirst(String)}</li>
-     *  <li>{@link Matcher#appendReplacement(StringBuffer, String)}</li>
-     *  </ul>
-     * @param replacementPattern the input string to be evaluated
-     * @return the modified string
-     * @throws PatternSyntaxException group name was not found
-     */
-    public String replaceProperties(String replacementPattern) {
-        return replaceGroupNameWithIndex(
-                new StringBuilder(replacementPattern),
-                PROPERTY_PATTERN,
-                "$"
-                ).toString();
-    }
-
-    /**
-     * Splits the given input sequence around matches of this pattern.
-     *
-     * <p>The array returned by this method contains each substring of the
-     * input sequence that is terminated by another subsequence that matches
-     * this pattern or is terminated by the end of the input sequence. The
-     * substrings in the array are in the order in which they occur in the
-     * input. If this pattern does not match any subsequence of the input
-     * then the resulting array has just one element, namely the input
-     * sequence in string form.</p>
-     *
-     * <p>The limit parameter controls the number of times the pattern is
-     * applied and therefore affects the length of the resulting array. If
-     * the limit n is greater than zero then the pattern will be applied
-     * at most n - 1 times, the array's length will be no greater than n,
-     * and the array's last entry will contain all input beyond the last
-     * matched delimiter. If n is non-positive then the pattern will be
-     * applied as many times as possible and the array can have any length.
-     * If n is zero then the pattern will be applied as many times as
-     * possible, the array can have any length, and trailing empty strings
-     * will be discarded.</p>
-     *
-     * @param input The character sequence to be split
-     * @param limit The result threshold, as described above
-     * @return The array of strings computed by splitting the input around
-     * matches of this pattern
-     */
-    public String[] split(CharSequence input, int limit) {
-        return pattern.split(input, limit);
-    }
-
-    /**
-     * Splits the given input sequence around matches of this pattern.
-     *
-     * @param input The character sequence to be split
-     * @return The array of strings computed by splitting the input around
-     * matches of this pattern
-     */
-    public String[] split(CharSequence input) {
-        return pattern.split(input);
-    }
-
-    /**
-     * Returns a string representation of this pattern
-     *
-     * @return the string
-     */
-    public String toString() {
-        return namedPattern;
     }
 
     /**
@@ -451,13 +264,14 @@ public class Pattern implements Serializable {
         // to not test for it, which resolves uncovered branches
         // in Cobertura
 
-        /*if (pos >= 0 && pos + 4 < len)*/ {
-            String pre = s.substring(pos, pos+4);
+        /*if (pos >= 0 && pos + 4 < len)*/
+        {
+            String pre = s.substring(pos, pos + 4);
             isLookbehind = pre.equals("(?<=") || pre.equals("(?<!");
         }
         return /*(pos >= 0 && pos + 2 < len) &&*/
-               s.charAt(pos + 1) == '?' &&
-               (isLookbehind || s.charAt(pos + 2) != '<');
+                s.charAt(pos + 1) == '?' &&
+                        (isLookbehind || s.charAt(pos + 2) != '<');
     }
 
     /**
@@ -498,10 +312,10 @@ public class Pattern implements Serializable {
      * @param namedPattern regex the regular expression pattern to parse
      * @return list of group info for all named groups
      */
-    static public Map<String,List<GroupInfo> > extractGroupInfo(String namedPattern) {
-        Map<String,List<GroupInfo> > groupInfo = new LinkedHashMap<String,List<GroupInfo> >();
+    static public Map<String, List<GroupInfo>> extractGroupInfo(String namedPattern) {
+        Map<String, List<GroupInfo>> groupInfo = new LinkedHashMap<String, List<GroupInfo>>();
         java.util.regex.Matcher matcher = NAMED_GROUP_PATTERN.matcher(namedPattern);
-        while(matcher.find()) {
+        while (matcher.find()) {
 
             int pos = matcher.start();
 
@@ -546,6 +360,179 @@ public class Pattern implements Serializable {
             m.reset(input);
         }
         return input;
+    }
+
+    /**
+     * Gets the group index of a named capture group
+     *
+     * @param groupName name of capture group
+     * @return group index or -1 if not found
+     */
+    public int indexOf(String groupName) {
+        return indexOf(groupName, 0);
+    }
+
+    /**
+     * Gets the group index of a named capture group at the
+     * specified index. If only one instance of the named
+     * group exists, use index 0.
+     *
+     * @param groupName name of capture group
+     * @param index the instance index of the named capture group within
+     * the pattern; e.g., index is 2 for the third instance
+     * @return group index or -1 if not found
+     * @throws IndexOutOfBoundsException if instance index is out of bounds
+     */
+    public int indexOf(String groupName, int index) {
+        int idx = -1;
+        if (groupInfo.containsKey(groupName)) {
+            List<GroupInfo> list = groupInfo.get(groupName);
+            idx = list.get(index).groupIndex();
+        }
+        return idx;
+    }
+
+    /**
+     * Returns this pattern's match flags
+     *
+     * @return The match flags specified when this pattern was compiled
+     */
+    public int flags() {
+        return pattern.flags();
+    }
+
+    /**
+     * Creates a matcher that will match the given input against this pattern.
+     *
+     * @param input The character sequence to be matched
+     * @return A new matcher for this pattern
+     */
+    public Matcher matcher(CharSequence input) {
+        return new Matcher(this, input);
+    }
+
+    /**
+     * Returns the wrapped {@link java.util.regex.Pattern}
+     * @return the pattern
+     */
+    public java.util.regex.Pattern pattern() {
+        return pattern;
+    }
+
+    /**
+     * Returns the regular expression from which this pattern was compiled.
+     *
+     * @return The source of this pattern
+     */
+    public String standardPattern() {
+        return pattern.pattern();
+    }
+
+    /**
+     * Returns the original regular expression (including named groups)
+     *
+     * @return The regular expression
+     */
+    public String namedPattern() {
+        return namedPattern;
+    }
+
+    /**
+     * Gets the names of all capture groups
+     *
+     * @return the list of names
+     */
+    public List<String> groupNames() {
+        if (groupNames == null) {
+            groupNames = new ArrayList<String>(groupInfo.keySet());
+        }
+        return Collections.unmodifiableList(groupNames);
+    }
+
+    /**
+     * Gets the names and group info (group index and string position
+     * within the named pattern) of all named capture groups
+     *
+     * @return a map of group names and their info
+     */
+    public Map<String, List<GroupInfo>> groupInfo() {
+        return Collections.unmodifiableMap(groupInfo);
+    }
+
+    /**
+     * Replaces group-name properties (e.g., <b><code>${named}</code></b>) in
+     * a replacement pattern with the equivalent reference that uses the
+     * corresponding group index (e.g., <b><code>$2</code></b>). If the string
+     * contains literal "$", it must be escaped with slash or else this call
+     * will attempt to parse it as a group-name property.
+     *
+     * This is meant to be used to transform the parameter for:
+     *  <ul>
+     *  <li>{@link Matcher#replaceAll(String)}</li>
+     *  <li>{@link Matcher#replaceFirst(String)}</li>
+     *  <li>{@link Matcher#appendReplacement(StringBuffer, String)}</li>
+     *  </ul>
+     * @param replacementPattern the input string to be evaluated
+     * @return the modified string
+     * @throws PatternSyntaxException group name was not found
+     */
+    public String replaceProperties(String replacementPattern) {
+        return replaceGroupNameWithIndex(
+                new StringBuilder(replacementPattern),
+                PROPERTY_PATTERN,
+                "$"
+        ).toString();
+    }
+
+    /**
+     * Splits the given input sequence around matches of this pattern.
+     *
+     * <p>The array returned by this method contains each substring of the
+     * input sequence that is terminated by another subsequence that matches
+     * this pattern or is terminated by the end of the input sequence. The
+     * substrings in the array are in the order in which they occur in the
+     * input. If this pattern does not match any subsequence of the input
+     * then the resulting array has just one element, namely the input
+     * sequence in string form.</p>
+     *
+     * <p>The limit parameter controls the number of times the pattern is
+     * applied and therefore affects the length of the resulting array. If
+     * the limit n is greater than zero then the pattern will be applied
+     * at most n - 1 times, the array's length will be no greater than n,
+     * and the array's last entry will contain all input beyond the last
+     * matched delimiter. If n is non-positive then the pattern will be
+     * applied as many times as possible and the array can have any length.
+     * If n is zero then the pattern will be applied as many times as
+     * possible, the array can have any length, and trailing empty strings
+     * will be discarded.</p>
+     *
+     * @param input The character sequence to be split
+     * @param limit The result threshold, as described above
+     * @return The array of strings computed by splitting the input around
+     * matches of this pattern
+     */
+    public String[] split(CharSequence input, int limit) {
+        return pattern.split(input, limit);
+    }
+
+    /**
+     * Splits the given input sequence around matches of this pattern.
+     *
+     * @param input The character sequence to be split
+     * @return The array of strings computed by splitting the input around
+     * matches of this pattern
+     */
+    public String[] split(CharSequence input) {
+        return pattern.split(input);
+    }
+
+    /**
+     * Returns a string representation of this pattern
+     *
+     * @return the string
+     */
+    public String toString() {
+        return namedPattern;
     }
 
     /**
@@ -660,17 +647,17 @@ public class Pattern implements Serializable {
         if (!(obj instanceof Pattern)) {
             return false;
         }
-        Pattern other = (Pattern)obj;
+        Pattern other = (Pattern) obj;
 
         boolean groupNamesMatch = (groupNames == null && other.groupNames == null) ||
-                                  (groupNames != null && !Collections.disjoint(groupNames, other.groupNames));
+                (groupNames != null && !Collections.disjoint(groupNames, other.groupNames));
         boolean groupInfoMatch = groupNamesMatch && groupInfoMatches(groupInfo, other.groupInfo);
 
         return groupNamesMatch
-            && groupInfoMatch
-            && namedPattern.equals(other.namedPattern)
-            && pattern.flags() == other.pattern.flags()
-            ;
+                && groupInfoMatch
+                && namedPattern.equals(other.namedPattern)
+                && pattern.flags() == other.pattern.flags()
+                ;
     }
 
     /*

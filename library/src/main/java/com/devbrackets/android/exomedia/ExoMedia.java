@@ -26,32 +26,11 @@ import java.util.Map;
  */
 public class ExoMedia {
     /**
-     * @deprecated Use {@link DataSourceFactoryProvider} instead
-     */
-    @Deprecated
-    public interface HttpDataSourceFactoryProvider {
-        @NonNull
-        HttpDataSource.BaseFactory provide(@NonNull String userAgent, @Nullable TransferListener<? super DataSource> listener);
-    }
-
-    public interface DataSourceFactoryProvider {
-        @NonNull
-        DataSource.Factory provide(@NonNull String userAgent, @Nullable TransferListener<? super DataSource> listener);
-    }
-
-    public enum RendererType {
-        AUDIO,
-        VIDEO,
-        CLOSED_CAPTION,
-        METADATA
-    }
-
-    /**
      * Registers additional customized {@link com.google.android.exoplayer2.Renderer}s
      * that will be used by the {@link com.google.android.exoplayer2.source.MediaSource}s to
      * correctly play media.
      *
-     * @param type The type for the renderer
+     * @param type  The type for the renderer
      * @param clazz The class of the customized Renderer
      */
     public static void registerRenderer(@NonNull RendererType type, @NonNull Class<? extends Renderer> clazz) {
@@ -107,6 +86,27 @@ public class ExoMedia {
      */
     public static void setLoadControl(@Nullable LoadControl loadControl) {
         Data.loadControl = loadControl;
+    }
+
+    public enum RendererType {
+        AUDIO,
+        VIDEO,
+        CLOSED_CAPTION,
+        METADATA
+    }
+
+    /**
+     * @deprecated Use {@link DataSourceFactoryProvider} instead
+     */
+    @Deprecated
+    public interface HttpDataSourceFactoryProvider {
+        @NonNull
+        HttpDataSource.BaseFactory provide(@NonNull String userAgent, @Nullable TransferListener<? super DataSource> listener);
+    }
+
+    public interface DataSourceFactoryProvider {
+        @NonNull
+        DataSource.Factory provide(@NonNull String userAgent, @Nullable TransferListener<? super DataSource> listener);
     }
 
     public static class Data {

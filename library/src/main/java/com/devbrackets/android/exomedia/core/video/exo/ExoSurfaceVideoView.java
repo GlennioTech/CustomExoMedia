@@ -68,18 +68,18 @@ public class ExoSurfaceVideoView extends ResizingSurfaceView implements VideoVie
     }
 
     @Override
-    public void setVideoUri(@Nullable Uri uri, @Nullable List<Pair<String,String>> extraHeaders) {
-        delegate.setVideoUri(uri,extraHeaders);
+    public void setVideoUri(@Nullable Uri uri, @Nullable List<Pair<String, String>> extraHeaders) {
+        delegate.setVideoUri(uri, extraHeaders);
     }
 
     @Override
-    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource, @Nullable List<Pair<String,String>> extraHeaders) {
-        delegate.setVideoUri(uri,null, mediaSource,extraHeaders);
+    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource, @Nullable List<Pair<String, String>> extraHeaders) {
+        delegate.setVideoUri(uri, null, mediaSource, extraHeaders);
     }
 
     @Override
     public void setVideoUri(@Nullable Uri videoUri, @Nullable Uri audioUri, @Nullable List<Pair<String, String>> extraHeaders) {
-        delegate.setVideoUri(videoUri,audioUri,extraHeaders);
+        delegate.setVideoUri(videoUri, audioUri, extraHeaders);
     }
 
     @Override

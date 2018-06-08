@@ -18,9 +18,9 @@ import java.util.List;
 public class DashMediaSourceBuilder extends MediaSourceBuilder {
     @NonNull
     @Override
-    protected MediaSource buildInternal(@NonNull Context context, @NonNull Uri uri, @Nullable Uri audioUri, @Nullable List<Pair<String,String>> headers, @NonNull String userAgent, @NonNull Handler handler, @Nullable TransferListener<? super DataSource> transferListener) {
-        DataSource.Factory dataSourceFactory = buildDataSourceFactory(context,headers, userAgent, null);
-        DataSource.Factory meteredDataSourceFactory = buildDataSourceFactory(context,headers, userAgent, transferListener);
+    protected MediaSource buildInternal(@NonNull Context context, @NonNull Uri uri, @Nullable Uri audioUri, @Nullable List<Pair<String, String>> headers, @NonNull String userAgent, @NonNull Handler handler, @Nullable TransferListener<? super DataSource> transferListener) {
+        DataSource.Factory dataSourceFactory = buildDataSourceFactory(context, headers, userAgent, null);
+        DataSource.Factory meteredDataSourceFactory = buildDataSourceFactory(context, headers, userAgent, transferListener);
 
         return new DashMediaSource.Factory(new DefaultDashChunkSource.Factory(meteredDataSourceFactory), dataSourceFactory)
                 .createMediaSource(uri, handler, null);

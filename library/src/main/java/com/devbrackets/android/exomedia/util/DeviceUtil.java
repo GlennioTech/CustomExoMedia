@@ -86,12 +86,12 @@ public class DeviceUtil {
     }
 
     public static class NonCompatibleDevice {
+        private final String model;
+        private final String manufacturer;
         /***
          * True if we should treat all devices from the manufacturer as non compliant
          */
         private boolean ignoreModel;
-        private final String model;
-        private final String manufacturer;
 
         public NonCompatibleDevice(@NonNull String manufacturer) {
             this.manufacturer = manufacturer;

@@ -135,7 +135,7 @@ public class AudioPlayer {
      * Sets the source path for the audio item.  This path can be a web address (e.g. http://) or
      * an absolute local path (e.g. file://)
      *
-     * @param uri The Uri representing the path to the audio item
+     * @param uri         The Uri representing the path to the audio item
      * @param mediaSource The MediaSource to use for audio playback
      */
     public void setDataSource(@Nullable Uri uri, @Nullable MediaSource mediaSource) {
@@ -186,7 +186,7 @@ public class AudioPlayer {
     /**
      * Sets the volume level for the audio playback.
      *
-     * @param leftVolume The volume range [0.0 - 1.0]
+     * @param leftVolume  The volume range [0.0 - 1.0]
      * @param rightVolume The volume range [0.0 - 1.0]
      */
     public void setVolume(@FloatRange(from = 0.0, to = 1.0) float leftVolume, @FloatRange(from = 0.0, to = 1.0) float rightVolume) {
@@ -204,7 +204,7 @@ public class AudioPlayer {
      * By default, no attempt is made to keep the device awake during playback.
      *
      * @param context the Context to use
-     * @param mode the power/wake mode to set
+     * @param mode    the power/wake mode to set
      * @see android.os.PowerManager
      */
     public void setWakeMode(Context context, int mode) {
@@ -333,7 +333,7 @@ public class AudioPlayer {
      * Changes to the track with <code>trackIndex</code> for the specified
      * <code>trackType</code>
      *
-     * @param trackType The type for the track to switch to the selected index
+     * @param trackType  The type for the track to switch to the selected index
      * @param trackIndex The index for the track to switch to
      */
     public void setTrack(ExoMedia.RendererType trackType, int trackIndex) {

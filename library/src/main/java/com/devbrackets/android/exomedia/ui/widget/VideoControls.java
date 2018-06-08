@@ -100,6 +100,27 @@ public abstract class VideoControls extends RelativeLayout {
     protected boolean canViewHide = true;
     protected boolean hideEmptyTextContainer = true;
 
+    public VideoControls(Context context) {
+        super(context);
+        setup(context);
+    }
+
+    public VideoControls(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        setup(context);
+    }
+
+    public VideoControls(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        setup(context);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public VideoControls(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        setup(context);
+    }
+
     /**
      * Sets the current video position, updating the seek bar
      * and the current time field
@@ -120,8 +141,8 @@ public abstract class VideoControls extends RelativeLayout {
      * Performs the progress update on the current time field,
      * and the seek bar
      *
-     * @param position The position in milliseconds
-     * @param duration The duration of the video in milliseconds
+     * @param position      The position in milliseconds
+     * @param duration      The duration of the video in milliseconds
      * @param bufferPercent The integer percent that is buffered [0, 100] inclusive
      */
     public abstract void updateProgress(@IntRange(from = 0) long position, @IntRange(from = 0) long duration, @IntRange(from = 0, to = 100) int bufferPercent);
@@ -137,6 +158,7 @@ public abstract class VideoControls extends RelativeLayout {
     /**
      * Performs the control visibility animation for showing or hiding
      * this view
+     *
      * @param toVisible True if the view should be visible at the end of the animation
      */
     protected abstract void animateVisibility(boolean toVisible);
@@ -160,27 +182,6 @@ public abstract class VideoControls extends RelativeLayout {
      * which will re-display the play/pause, progress, etc. controls
      */
     public abstract void finishLoading();
-
-    public VideoControls(Context context) {
-        super(context);
-        setup(context);
-    }
-
-    public VideoControls(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        setup(context);
-    }
-
-    public VideoControls(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        setup(context);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public VideoControls(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        setup(context);
-    }
 
     @Override
     protected void onAttachedToWindow() {
@@ -297,7 +298,7 @@ public abstract class VideoControls extends RelativeLayout {
     /**
      * Sets the drawables to use for the PlayPause button
      *
-     * @param playDrawable The drawable to represent play
+     * @param playDrawable  The drawable to represent play
      * @param pauseDrawable The drawable to represent pause
      */
     public void setPlayPauseDrawables(Drawable playDrawable, Drawable pauseDrawable) {
@@ -665,6 +666,7 @@ public abstract class VideoControls extends RelativeLayout {
 
     /**
      * Determines if the <code>textContainer</code> doesn't have any text associated with it
+     *
      * @return True if there is no text contained in the views in the <code>textContainer</code>
      */
     @SuppressWarnings("RedundantIfStatement")

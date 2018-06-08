@@ -77,13 +77,13 @@ public class ExoAudioPlayer implements AudioPlayerApi {
         exoMediaPlayer.seekTo(0);
 
         if (mediaSource != null) {
-            exoMediaPlayer.setMediaSource(mediaSource,null);
+            exoMediaPlayer.setMediaSource(mediaSource, null);
             listenerMux.setNotifiedCompleted(false);
         } else if (uri != null) {
-            exoMediaPlayer.setUri(uri,null);
+            exoMediaPlayer.setUri(uri, null);
             listenerMux.setNotifiedCompleted(false);
         } else {
-            exoMediaPlayer.setMediaSource(null,null);
+            exoMediaPlayer.setMediaSource(null, null);
         }
     }
 
@@ -154,7 +154,7 @@ public class ExoAudioPlayer implements AudioPlayerApi {
      */
     @Override
     public boolean restart() {
-        if(!exoMediaPlayer.restart()) {
+        if (!exoMediaPlayer.restart()) {
             return false;
         }
 

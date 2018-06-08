@@ -43,42 +43,20 @@ import static android.content.ContentValues.TAG;
  * and {@link android.view.SurfaceView} implementations
  */
 public class NativeVideoDelegate {
-    public interface Callback {
-        void videoSizeChanged(int width, int height);
-    }
-
-    public enum State {
-        ERROR,
-        IDLE,
-        PREPARING,
-        PREPARED,
-        PLAYING,
-        PAUSED,
-        COMPLETED
-    }
-
     protected Map<String, String> headers;
-
     protected State currentState = State.IDLE;
-
     protected Context context;
     protected Callback callback;
     protected ClearableSurface clearableSurface;
-
     protected MediaPlayer mediaPlayer;
-
     protected boolean playRequested = false;
     protected long requestedSeek;
     protected int currentBufferPercent;
-
     @FloatRange(from = 0.0, to = 1.0)
     protected float requestedVolume = 1.0f;
-
     protected ListenerMux listenerMux;
-
     @NonNull
     protected InternalListeners internalListeners = new InternalListeners();
-
     @Nullable
     protected MediaPlayer.OnCompletionListener onCompletionListener;
     @Nullable
@@ -91,7 +69,6 @@ public class NativeVideoDelegate {
     protected MediaPlayer.OnErrorListener onErrorListener;
     @Nullable
     protected MediaPlayer.OnInfoListener onInfoListener;
-
     public NativeVideoDelegate(@NonNull Context context, @NonNull Callback callback, @NonNull ClearableSurface clearableSurface) {
         this.context = context;
         this.callback = callback;
@@ -238,12 +215,12 @@ public class NativeVideoDelegate {
     /**
      * Sets video URI using specific headers.
      *
-     * @param uri The Uri for the video to play
+     * @param uri     The Uri for the video to play
      * @param headers The headers for the URI request.
-     * Note that the cross domain redirection is allowed by default, but that can be
-     * changed with key/value pairs through the headers parameter with
-     * "android-allow-cross-domain-redirect" as the key and "0" or "1" as the value
-     * to disallow or allow cross domain redirection.
+     *                Note that the cross domain redirection is allowed by default, but that can be
+     *                changed with key/value pairs through the headers parameter with
+     *                "android-allow-cross-domain-redirect" as the key and "0" or "1" as the value
+     *                to disallow or allow cross domain redirection.
      */
     public void setVideoURI(Uri uri, @Nullable Map<String, String> headers) {
         this.headers = headers;
@@ -384,6 +361,20 @@ public class NativeVideoDelegate {
 
             internalListeners.onError(mediaPlayer, MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
         }
+    }
+
+    public enum State {
+        ERROR,
+        IDLE,
+        PREPARING,
+        PREPARED,
+        PLAYING,
+        PAUSED,
+        COMPLETED
+    }
+
+    public interface Callback {
+        void videoSizeChanged(int width, int height);
     }
 
     public class InternalListeners implements MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener,

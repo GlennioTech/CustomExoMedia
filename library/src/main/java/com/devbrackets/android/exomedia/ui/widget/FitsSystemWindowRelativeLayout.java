@@ -113,7 +113,7 @@ public class FitsSystemWindowRelativeLayout extends RelativeLayout {
      */
     private boolean navBarCanMove() {
         //noinspection SimplifiableIfStatement
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             return this.getResources().getConfiguration().smallestScreenWidthDp <= 600;
         }
 

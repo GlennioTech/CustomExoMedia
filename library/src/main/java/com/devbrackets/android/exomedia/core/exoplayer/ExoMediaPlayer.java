@@ -109,13 +109,13 @@ public class ExoMediaPlayer implements Player.EventListener {
 
     @NonNull
     private final AtomicBoolean stopped = new AtomicBoolean();
+    @FloatRange(from = 0.0, to = 1.0)
+    protected float requestedVolume = 1.0f;
     private boolean prepared = false;
-
     @NonNull
     private StateStore stateStore = new StateStore();
     @NonNull
     private Repeater bufferRepeater = new Repeater();
-
     @Nullable
     private Surface surface;
     @Nullable
@@ -128,7 +128,6 @@ public class ExoMediaPlayer implements Player.EventListener {
     private MediaSourceProvider mediaSourceProvider = new MediaSourceProvider();
     @NonNull
     private DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-
     @Nullable
     private CaptionListener captionListener;
     @Nullable
@@ -137,16 +136,11 @@ public class ExoMediaPlayer implements Player.EventListener {
     private InternalErrorListener internalErrorListener;
     @Nullable
     private OnBufferUpdateListener bufferUpdateListener;
-
     @Nullable
     private PowerManager.WakeLock wakeLock = null;
-
     @NonNull
     private CapabilitiesListener capabilitiesListener = new CapabilitiesListener();
     private int audioSessionId = C.AUDIO_SESSION_ID_UNSET;
-
-    @FloatRange(from = 0.0, to = 1.0)
-    protected float requestedVolume = 1.0f;
 
     public ExoMediaPlayer(@NonNull Context context) {
         this.context = context;
@@ -169,7 +163,6 @@ public class ExoMediaPlayer implements Player.EventListener {
         player = ExoPlayerFactory.newInstance(renderers.toArray(new Renderer[renderers.size()]), trackSelector, loadControl);
         player.addListener(this);
     }
-
 
 
     @Override
@@ -238,11 +231,11 @@ public class ExoMediaPlayer implements Player.EventListener {
     }
 
     public void setUri(@Nullable Uri uri, @Nullable List<Pair<String, String>> extraHeaders) {
-        setMediaSource(uri != null ? mediaSourceProvider.generate(context, mainHandler, uri,null,extraHeaders, bandwidthMeter) : null,extraHeaders);
+        setMediaSource(uri != null ? mediaSourceProvider.generate(context, mainHandler, uri, null, extraHeaders, bandwidthMeter) : null, extraHeaders);
     }
 
-    public void setUri(@Nullable Uri uri,@Nullable Uri audioUri, @Nullable List<Pair<String, String>> extraHeaders) {
-        setMediaSource(uri != null ? mediaSourceProvider.generate(context, mainHandler, uri,audioUri,extraHeaders, bandwidthMeter) : null,extraHeaders);
+    public void setUri(@Nullable Uri uri, @Nullable Uri audioUri, @Nullable List<Pair<String, String>> extraHeaders) {
+        setMediaSource(uri != null ? mediaSourceProvider.generate(context, mainHandler, uri, audioUri, extraHeaders, bandwidthMeter) : null, extraHeaders);
     }
 
 
@@ -281,14 +274,14 @@ public class ExoMediaPlayer implements Player.EventListener {
         metadataListener = listener;
     }
 
-    public void setSurface(@Nullable Surface surface) {
-        this.surface = surface;
-        sendMessage(C.TRACK_TYPE_VIDEO, C.MSG_SET_SURFACE, surface, false);
-    }
-
     @Nullable
     public Surface getSurface() {
         return surface;
+    }
+
+    public void setSurface(@Nullable Surface surface) {
+        this.surface = surface;
+        sendMessage(C.TRACK_TYPE_VIDEO, C.MSG_SET_SURFACE, surface, false);
     }
 
     public void clearSurface() {
@@ -327,7 +320,7 @@ public class ExoMediaPlayer implements Player.EventListener {
         }
 
         // Maps the available tracks
-        RendererType[] types = new RendererType[] {RendererType.AUDIO, RendererType.VIDEO, RendererType.CLOSED_CAPTION, RendererType.METADATA};
+        RendererType[] types = new RendererType[]{RendererType.AUDIO, RendererType.VIDEO, RendererType.CLOSED_CAPTION, RendererType.METADATA};
         for (RendererType type : types) {
             int exoPlayerTrackIndex = getExoPlayerTrackIndex(type);
             if (mappedTrackInfo.length > exoPlayerTrackIndex) {
@@ -366,7 +359,7 @@ public class ExoMediaPlayer implements Player.EventListener {
         }
 
         // Creates the track selection override
-        int[] tracks = new int[] {index};
+        int[] tracks = new int[]{index};
         TrackSelection.Factory factory = tracks.length == 1 ? new FixedTrackSelection.Factory() : adaptiveTrackSelectionFactory;
         MappingTrackSelector.SelectionOverride selectionOverride = new MappingTrackSelector.SelectionOverride(factory, exoPlayerTrackIndex, tracks);
 
@@ -374,14 +367,14 @@ public class ExoMediaPlayer implements Player.EventListener {
         trackSelector.setSelectionOverride(exoPlayerTrackIndex, trackGroupArray, selectionOverride);
     }
 
-    public void setVolume(@FloatRange(from = 0.0, to = 1.0) float volume) {
-        requestedVolume = volume;
-        sendMessage(C.TRACK_TYPE_AUDIO, C.MSG_SET_VOLUME, requestedVolume);
-    }
-
     @FloatRange(from = 0.0, to = 1.0)
     public float getVolume() {
         return requestedVolume;
+    }
+
+    public void setVolume(@FloatRange(from = 0.0, to = 1.0) float volume) {
+        requestedVolume = volume;
+        sendMessage(C.TRACK_TYPE_AUDIO, C.MSG_SET_VOLUME, requestedVolume);
     }
 
     public void setAudioStreamType(int streamType) {
@@ -423,11 +416,6 @@ public class ExoMediaPlayer implements Player.EventListener {
             player.setPlayWhenReady(false);
             player.stop();
         }
-    }
-
-    public void setPlayWhenReady(boolean playWhenReady) {
-        player.setPlayWhenReady(playWhenReady);
-        stayAwake(playWhenReady);
     }
 
     public void seekTo(long positionMs) {
@@ -495,6 +483,11 @@ public class ExoMediaPlayer implements Player.EventListener {
         return player.getPlayWhenReady();
     }
 
+    public void setPlayWhenReady(boolean playWhenReady) {
+        player.setPlayWhenReady(playWhenReady);
+        stayAwake(playWhenReady);
+    }
+
     /**
      * This function has the MediaPlayer access the low-level power manager
      * service to control the device's power usage while playing is occurring.
@@ -504,7 +497,7 @@ public class ExoMediaPlayer implements Player.EventListener {
      * By default, no attempt is made to keep the device awake during playback.
      *
      * @param context the Context to use
-     * @param mode the power/wake mode to set
+     * @param mode    the power/wake mode to set
      * @see android.os.PowerManager
      */
     public void setWakeMode(Context context, int mode) {
@@ -673,7 +666,7 @@ public class ExoMediaPlayer implements Player.EventListener {
             // see events when that is the only change.  Additionally, on some devices we get states ordered as
             // [seeking, ready, buffering, ready] while on others we get [seeking, buffering, ready]
             boolean informSeekCompletion = stateStore.matchesHistory(new int[]{StateStore.STATE_SEEKING, Player.STATE_BUFFERING, Player.STATE_READY}, true);
-            informSeekCompletion |= stateStore.matchesHistory(new int[] {Player.STATE_BUFFERING, StateStore.STATE_SEEKING, Player.STATE_READY}, true);
+            informSeekCompletion |= stateStore.matchesHistory(new int[]{Player.STATE_BUFFERING, StateStore.STATE_SEEKING, Player.STATE_READY}, true);
             informSeekCompletion |= stateStore.matchesHistory(new int[]{StateStore.STATE_SEEKING, Player.STATE_READY, Player.STATE_BUFFERING, Player.STATE_READY}, true);
 
             for (ExoPlayerListener listener : listeners) {

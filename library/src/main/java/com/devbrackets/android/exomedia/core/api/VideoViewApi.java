@@ -43,19 +43,15 @@ import java.util.Map;
  */
 public interface VideoViewApi {
 
-    interface OnSurfaceSizeChanged {
-        void onSurfaceSizeChanged(int width, int height);
-    }
-
     int getHeight();
 
     int getWidth();
 
-    void setVideoUri(@Nullable Uri uri,@Nullable List<Pair<String,String>> extraHeaders);
+    void setVideoUri(@Nullable Uri uri, @Nullable List<Pair<String, String>> extraHeaders);
 
-    void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource,@Nullable List<Pair<String,String>> extraHeaders);
+    void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource, @Nullable List<Pair<String, String>> extraHeaders);
 
-    void setVideoUri(@Nullable Uri videoUri, @Nullable Uri audioUri,@Nullable List<Pair<String,String>> extraHeaders);
+    void setVideoUri(@Nullable Uri videoUri, @Nullable Uri audioUri, @Nullable List<Pair<String, String>> extraHeaders);
 
     /**
      * Sets the {@link MediaDrmCallback} to use when handling DRM for media.
@@ -129,9 +125,9 @@ public interface VideoViewApi {
     @Nullable
     Map<ExoMedia.RendererType, TrackGroupArray> getAvailableTracks();
 
-    void setScaleType(@NonNull ScaleType scaleType);
-
     ScaleType getScaleType();
+
+    void setScaleType(@NonNull ScaleType scaleType);
 
     void setMeasureBasedOnAspectRatioEnabled(boolean doNotMeasureBasedOnAspectRatio);
 
@@ -150,4 +146,8 @@ public interface VideoViewApi {
     void onVideoSizeChanged(int width, int height);
 
     void setRepeatMode(@Player.RepeatMode int repeatMode);
+
+    interface OnSurfaceSizeChanged {
+        void onSurfaceSizeChanged(int width, int height);
+    }
 }

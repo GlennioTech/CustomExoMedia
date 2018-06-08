@@ -28,25 +28,16 @@ import android.support.annotation.Nullable;
 public class StopWatch {
     protected static final String HANDLER_THREAD_NAME = "ExoMedia_StopWatch_HandlerThread";
     protected static final int DEFAULT_TICK_DELAY = 33; // ~30 fps
-
-    public interface TickListener {
-        void onStopWatchTick(long currentTime);
-    }
-
     protected volatile boolean isRunning = false;
     protected int tickDelay = DEFAULT_TICK_DELAY;
-
     protected Handler delayedHandler;
     protected HandlerThread handlerThread;
     protected boolean useHandlerThread = false;
-
     protected TickListener listener;
     protected TickRunnable tickRunnable = new TickRunnable();
-
     protected long startTime = 0;
     protected long currentTime = 0;
     protected long storedTime = 0;
-
     public StopWatch() {
         this(true);
     }
@@ -71,21 +62,21 @@ public class StopWatch {
     }
 
     /**
-     * Sets the approximate duration between time updates.
-     *
-     * @param milliSeconds The approximate duration between time updates [default: {@value #DEFAULT_TICK_DELAY}]
-     */
-    public void setTickDelay(int milliSeconds) {
-        tickDelay = milliSeconds;
-    }
-
-    /**
      * Retrieves the approximate duration between time updates.
      *
      * @return The approximate duration in milliseconds between time updates
      */
     public int getTickDelay() {
         return tickDelay;
+    }
+
+    /**
+     * Sets the approximate duration between time updates.
+     *
+     * @param milliSeconds The approximate duration between time updates [default: {@value #DEFAULT_TICK_DELAY}]
+     */
+    public void setTickDelay(int milliSeconds) {
+        tickDelay = milliSeconds;
     }
 
     /**
@@ -184,6 +175,10 @@ public class StopWatch {
      */
     public void setTickListener(@Nullable TickListener listener) {
         this.listener = listener;
+    }
+
+    public interface TickListener {
+        void onStopWatchTick(long currentTime);
     }
 
     protected class TickRunnable implements Runnable {
