@@ -5,15 +5,15 @@ def versionMinor = 1
 def versionPatch = 0
 
 dependencies {
-    implementation "com.android.support:support-media-compat:27.0.0"
-    implementation "com.android.support:appcompat-v7:27.0.0"
+    implementation "com.android.support:support-media-compat:$supportLibMediaCompatVersion"
+    implementation "com.android.support:appcompat-v7:$supportLibAppCompatV7Version"
 
     // ExoPlayer
-    api "com.google.android.exoplayer:exoplayer-core:2.7.2"
-    api "com.google.android.exoplayer:exoplayer-dash:2.7.2"
-    api "com.google.android.exoplayer:exoplayer-hls:2.7.2"
-    api "com.google.android.exoplayer:exoplayer-smoothstreaming:2.7.2"
-    api "com.google.android.exoplayer:exoplayer-ui:2.7.2"
+    api "com.google.android.exoplayer:exoplayer-core:$exoPlayerVersion"
+    api "com.google.android.exoplayer:exoplayer-dash:$exoPlayerVersion"
+    api "com.google.android.exoplayer:exoplayer-hls:$exoPlayerVersion"
+    api "com.google.android.exoplayer:exoplayer-smoothstreaming:$exoPlayerVersion"
+    api "com.google.android.exoplayer:exoplayer-ui:$exoPlayerVersion"
 }
 
 android {
