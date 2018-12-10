@@ -341,7 +341,7 @@ public class ExoMediaPlayer implements Player.EventListener {
         }
 
         // Verifies the track selection has been overridden
-        MappingTrackSelector.SelectionOverride selectionOverride = trackSelector.getSelectionOverride(exoPlayerTrackIndex, trackGroupArray);
+        DefaultTrackSelector.SelectionOverride selectionOverride = trackSelector.getSelectionOverride(exoPlayerTrackIndex, trackGroupArray);
         if (selectionOverride == null || selectionOverride.groupIndex != exoPlayerTrackIndex || selectionOverride.length <= 0) {
             return -1;
         }
@@ -361,7 +361,7 @@ public class ExoMediaPlayer implements Player.EventListener {
         // Creates the track selection override
         int[] tracks = new int[]{index};
         TrackSelection.Factory factory = tracks.length == 1 ? new FixedTrackSelection.Factory() : adaptiveTrackSelectionFactory;
-        MappingTrackSelector.SelectionOverride selectionOverride = new MappingTrackSelector.SelectionOverride(factory, exoPlayerTrackIndex, tracks);
+        DefaultTrackSelector.SelectionOverride selectionOverride = new DefaultTrackSelector.SelectionOverride(exoPlayerTrackIndex, tracks);
 
         // Specifies the correct track to use
         trackSelector.setSelectionOverride(exoPlayerTrackIndex, trackGroupArray, selectionOverride);
@@ -757,8 +757,8 @@ public class ExoMediaPlayer implements Player.EventListener {
         }
 
         @Override
-        public byte[] executeKeyRequest(UUID uuid, ExoMediaDrm.KeyRequest request) throws Exception {
-            return drmCallback != null ? drmCallback.executeKeyRequest(uuid, request) : new byte[0];
+        public byte[] executeKeyRequest(UUID uuid, ExoMediaDrm.KeyRequest request, @Nullable String mediaProvidedLicenseServerUrl) throws Exception {
+            return drmCallback != null ? drmCallback.executeKeyRequest(uuid, request, mediaProvidedLicenseServerUrl) : new byte[0];
         }
     }
 
